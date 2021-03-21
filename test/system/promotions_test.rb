@@ -141,4 +141,50 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'NATAL10-0100'
     assert_no_text 'NATAL10-0101'
   end
+
+  test 'edit a promotion' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+
+    visit promotion_path(promotion)
+    click_on "Editar promoção"
+    fill_in 'Nome', with: 'Carnaval'
+    click_on 'Salvar alterações'
+
+    assert_text 'Promoção editada com sucesso'
+    assert_text 'Carnaval'
+    assert_no_link 'Natal'
+  end
+
+  test 'edited promotion do not have blanks' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+
+    visit promotion_path(promotion)
+    click_on "Editar promoção"
+    fill_in 'Nome', with: ''
+    fill_in 'Descrição', with: ''
+    fill_in 'Código', with: ''
+    fill_in 'Desconto', with: ''
+    fill_in 'Quantidade de cupons', with: ''
+    fill_in 'Data de término', with: ''
+    click_on 'Salvar alterações'
+
+    assert_text 'não pode ficar em branco', count: 5
+  end
+
+  test 'delete promotion' do
+    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  expiration_date: '22/12/2033')
+    
+    visit promotion_path(promotion)
+    click_on 'Apagar promoção'
+
+    assert_current_path promotions_path
+    assert_text "Nenhuma promoção cadastrada"
+    assert_no_link 'Natal'
+  end
 end

@@ -1,5 +1,7 @@
 <%= flash[:notice] %>
 <%= link_to 'Voltar', promotions_path %>
+ <%= link_to 'Editar promoção', edit_promotion_path(@promotion), method: :get %>
+ <%= link_to 'Apagar promoção', promotion_path(@promotion), method: :delete %>
 
 <h3><%= @promotion.name %></h3>
     <dl>

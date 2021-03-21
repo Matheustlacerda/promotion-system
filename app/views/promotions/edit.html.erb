@@ -1,0 +1,46 @@
+<%= link_to "Voltar", promotions_path %>
+
+<h2>Edição de Promoção</h2>
+
+<% if @promotion.errors.any? %>
+<h4>Não foi possível salvar, foram encontrados os seguintes erros:</h4>
+  <ul>
+    <% @promotion.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+
+<%= form_with model: @promotion do |form| %>
+  <div>
+    <%= form.label :name,'Nome:' %>
+    <%= form.text_field :name %>
+  </div>
+  <br>
+  <div>
+    <%= form.label :description,'Descrição:' %>
+    <%= form.text_area :description %>
+  </div>
+  <br>
+  <div>
+    <%= form.label :code,'Código:' %>
+    <%= form.text_field :code %>
+  </div>
+  <br>
+  <div>
+    <%= form.label :discount_rate, 'Desconto:' %>
+    <%= form.number_field :discount_rate, in: 0..100, step: 0.1  %>
+  </div>
+  <br>
+  <div>
+    <%= form.label :coupon_quantity,'Quantidade de cupons:' %>
+    <%= form.number_field :coupon_quantity, min:1 %>
+  </div>
+  <br>
+  <div>
+    <%= form.label :expiration_date,'Data de término:' %>
+    <%= form.date_field :expiration_date %>
+  </div>
+  <div><%= form.submit 'Salvar alterações' %></div>
+<% end %>

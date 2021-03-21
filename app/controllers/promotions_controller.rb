@@ -20,6 +20,27 @@ class PromotionsController < ApplicationController
         end
     end
 
+    def edit 
+      @promotion = Promotion.find(params[:id])
+    end
+
+    def update
+      @promotion = Promotion.find(params[:id]) 
+      if @promotion.update(promotion_params)
+        flash[:notice] = 'Promoção editada com sucesso'
+        redirect_to @promotion
+      else
+        render :edit
+      end
+    end
+
+    def destroy
+      @promotion = Promotion.find(params[:id])
+      flash[:notice] = "Promoção #{@promotion.name} apagada! "
+      @promotion.destroy
+      redirect_to promotions_path
+    end
+
     def generate_coupons
       @promotion = Promotion.find(params[:id])
 
