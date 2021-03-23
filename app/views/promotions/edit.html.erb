@@ -10,8 +10,6 @@
     <% end %>
   </ul>
 <% end %>
-
-
 <%= form_with model: @promotion do |form| %>
   <div>
     <%= form.label :name,'Nome:' %>
@@ -40,7 +38,7 @@
   <br>
   <div>
     <%= form.label :expiration_date,'Data de término:' %>
-    <%= form.date_field :expiration_date %>
+    <%= form.text_field :expiration_date %>
   </div>
   <div><%= form.submit 'Salvar alterações' %></div>
 <% end %>

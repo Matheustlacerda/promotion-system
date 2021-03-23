@@ -120,7 +120,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Código', with: 'NATAL10'
     click_on 'Criar promoção'
 
-    assert_text 'deve ser único', count: 2
+    assert_text 'já está em uso', count: 2
   end
 
   test 'generate coupons for a promotion' do
@@ -157,9 +157,9 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_no_link 'Natal'
   end
 
-  test 'edited promotion do not have blanks' do
+  test 'edited promotion attributes cannot be blan' do
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                                  code: 'NATAL10', discount_rate: 10, coupon_quantity: 10,
                                   expiration_date: '22/12/2033')
 
     visit promotion_path(promotion)
@@ -172,7 +172,15 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Data de término', with: ''
     click_on 'Salvar alterações'
 
-    assert_text 'não pode ficar em branco', count: 5
+    refute promotion.valid?
+    assert_includes promotion.errors[:name], 'não pode ficar em branco'
+    assert_includes promotion.errors[:code], 'não pode ficar em branco'
+    assert_includes promotion.errors[:discount_rate], 'não pode ficar em '\
+                                                      'branco'
+    assert_includes promotion.errors[:coupon_quantity], 'não pode ficar em'\
+                                                        ' branco'
+    assert_includes promotion.errors[:expiration_date], 'não pode ficar em'\
+                                                        ' branco'
   end
 
   test 'delete promotion' do
