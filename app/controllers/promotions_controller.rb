@@ -58,14 +58,16 @@ class PromotionsController < ApplicationController
     end
 
     def update_promotions_and_cupons
-      @promotion.update(promotion_params)
+      if @promotion.update(promotion_params)
   
-      if @promotion.coupons.any?
-        @promotion.coupons.destroy_all
-        create_cupons_for_promotion
+        if @promotion.coupons.any?
+          @promotion.coupons.destroy_all
+          create_cupons_for_promotion
+        end      
+        true
+      else
+        false
       end
-      
-      true
     end    
 
     def create_cupons_for_promotion
