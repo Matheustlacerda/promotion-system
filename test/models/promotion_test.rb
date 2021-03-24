@@ -4,7 +4,15 @@ class PromotionTest < ActiveSupport::TestCase
   test 'attributes cannot be blank' do
     promotion = Promotion.new
 
-    assert_text 'não pode ficar em branco', count: 5
+    refute promotion.valid?
+    assert_includes promotion.errors[:name], 'não pode ficar em branco'
+    assert_includes promotion.errors[:code], 'não pode ficar em branco'
+    assert_includes promotion.errors[:discount_rate], 'não pode ficar em '\
+                                                      'branco'
+    assert_includes promotion.errors[:coupon_quantity], 'não pode ficar em'\
+                                                        ' branco'
+    assert_includes promotion.errors[:expiration_date], 'não pode ficar em'\
+                                                        ' branco'
   end
 
   test 'code must be uniq' do
