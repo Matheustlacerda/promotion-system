@@ -164,6 +164,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
     visit promotion_path(promotion)
     click_on "Editar promoção"
+
     fill_in 'Nome', with: ''
     fill_in 'Descrição', with: ''
     fill_in 'Código', with: ''
@@ -172,15 +173,17 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Data de término', with: ''
     click_on 'Salvar alterações'
 
-    refute promotion.valid?
-    assert_includes promotion.errors[:name], 'não pode ficar em branco'
-    assert_includes promotion.errors[:code], 'não pode ficar em branco'
-    assert_includes promotion.errors[:discount_rate], 'não pode ficar em '\
-                                                      'branco'
-    assert_includes promotion.errors[:coupon_quantity], 'não pode ficar em'\
-                                                        ' branco'
-    assert_includes promotion.errors[:expiration_date], 'não pode ficar em'\
-                                                        ' branco'
+    assert_text 'não pode ficar em branco', count: 5
+
+    # refute promotion.valid?
+    # assert_includes promotion.errors[:name], 'não pode ficar em branco'
+    # assert_includes promotion.errors[:code], 'não pode ficar em branco'
+    # assert_includes promotion.errors[:discount_rate], 'não pode ficar em '\
+    #                                                   'branco'
+    # assert_includes promotion.errors[:coupon_quantity], 'não pode ficar em'\
+    #                                                     ' branco'
+    # assert_includes promotion.errors[:expiration_date], 'não pode ficar em'\
+    #                                                     ' branco'
   end
 
   test 'delete promotion' do
