@@ -187,4 +187,16 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text "Nenhuma promoção cadastrada"
     assert_no_link 'Natal'
   end
+
+  #test 'do not view promotion link without login' do 
+  #  visit root_path
+#
+  #  assert_no_link 'Promoções'
+  #end
+#
+  #test 'do not view promotions using route without login' do 
+  #  visit promotion_path
+#
+  # assert_corrent_path new_user_session_path
+  #end
 end
