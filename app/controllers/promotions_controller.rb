@@ -1,4 +1,5 @@
 class PromotionsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_promotion, only: %i[show generate_coupons 
                                          destroy update edit]
 
@@ -63,12 +64,12 @@ class PromotionsController < ApplicationController
         if @promotion.coupons.any?
           @promotion.coupons.destroy_all
           create_cupons_for_promotion
-        end      
+        end
         true
       else
         false
       end
-    end    
+    end
 
     def create_cupons_for_promotion
       (1..@promotion.coupon_quantity).each do |number|
