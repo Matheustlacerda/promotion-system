@@ -167,7 +167,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_no_link 'Natal'
   end
 
-  test 'edited promotion attributes cannot be blan' do
+  test 'edited promotion attributes cannot be blank' do
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                   code: 'NATAL10', discount_rate: 10, coupon_quantity: 10,
                                   expiration_date: '22/12/2033')
@@ -198,6 +198,29 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_current_path promotions_path
     assert_text "Nenhuma promoção cadastrada"
     assert_no_link 'Natal'
+  end
+
+  test 'search promotions by term and find a result' do
+    christmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
+                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+    christmas_night = Promotion.create!(name: 'Natalina', description: 'Promoção de Natal',
+                      code: 'NATAL11', discount_rate: 10, coupon_quantity: 100,
+                      expiration_date: '22/12/2033')
+    cyber_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
+                      description: 'Promoção de Cyber Monday',
+                      code: 'CYBER15', discount_rate: 15,
+                      expiration_date: '22/12/2033')
+
+    login_user
+    visit root_path
+    click_on 'Promoções'
+    fill_in 'Busca', with: 'natal'
+    click_on 'Buscar'
+
+    assert_text christmas.name
+    assert_text christmas_night.name
+    refute_text cyber_monday.name
   end
 
   test 'do not view promotion link without login' do 

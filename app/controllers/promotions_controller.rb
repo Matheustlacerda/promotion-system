@@ -4,7 +4,12 @@ class PromotionsController < ApplicationController
                                          destroy update edit]
 
   def index
-    @promotions = Promotion.all
+    @promotions = 
+    if params[:q]
+      Promotion.search(params[:q])
+    else
+    Promotion.all
+    end
   end
 
   def show
@@ -44,7 +49,12 @@ class PromotionsController < ApplicationController
   def generate_coupons
     create_cupons_for_promotion   
     redirect_to @promotion, notice: t('.success')
-  end  
+  end
+
+  def search
+    @promotions = Promotion.search(params[:q])
+    render :index
+  end
 
   private 
     def set_promotion

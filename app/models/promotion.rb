@@ -9,4 +9,12 @@ class Promotion < ApplicationRecord
               :expiration_date, on: :update,
               presence: true
     validates :code, :name, uniqueness: true
+
+    def self.search(query)
+      text =
+      %w[name code description]
+        .map { |field| "#{field} LIKE :query" }
+        .join (' OR ')
+      where(text, query: "%#{query}%")
+    end
 end
