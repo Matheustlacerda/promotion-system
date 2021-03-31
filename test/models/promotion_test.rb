@@ -16,9 +16,10 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'code must be uniq' do
+    user = login_user
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
     promotion = Promotion.new(code: 'NATAL10')
 
     refute promotion.valid?
@@ -26,39 +27,42 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'name must be uniq' do
+    user = login_user
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user )
     promotion = Promotion.new(name: 'Natal')
 
     refute promotion.valid?
     assert_includes promotion.errors[:name], 'já está em uso'
   end
 
-  test '.search by exact' do 
+  test '.search by exact' do
+    user = login_user
     christmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user )
     cyber_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user )
     result = Promotion.search('Natal')
     assert_includes result, christmas
     refute_includes result, cyber_monday
   end
 
   test '.search by parcial' do 
+    user = login_user
     christmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
     christmas_night = Promotion.create!(name: 'Natalina', description: 'Promoção de Natal',
                       code: 'NATAL11', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user )
     cyber_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user)
     result = Promotion.search('natal')
     assert_includes result, christmas
     assert_includes result, christmas_night
@@ -66,13 +70,14 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search finds nothing' do 
+    user = login_user
     christmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user )
     cyber_monday = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033')
+                      expiration_date: '22/12/2033', user: user )
     result = Promotion.search('Carnavall')
     assert_empty result
   end

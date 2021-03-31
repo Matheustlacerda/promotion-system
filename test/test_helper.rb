@@ -16,5 +16,6 @@ class ActiveSupport::TestCase
     user = User.create!(email: 'matheus.tl@iugu.com.br', password: 'password' )
     
     login_as user, scope: :user
+    user
   end
 end
