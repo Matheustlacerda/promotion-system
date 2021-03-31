@@ -2,6 +2,7 @@ class PromotionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_promotion, only: %i[show generate_coupons 
                                          destroy update edit approve]
+  before_action :can_be_approved, only: [:approve]
 
   def index
     @promotions = 
@@ -58,7 +59,7 @@ class PromotionsController < ApplicationController
   end
 
   def approve
-    PromotionApproval.create!(promotion: @promotion, user: current_user)
+    current_user.promotion_approvals.create!(promotion: @promotion)
     redirect_to @promotion, notice: 'Promoção aprovada com sucesso'
   end
 
@@ -91,5 +92,10 @@ class PromotionsController < ApplicationController
       (1..@promotion.coupon_quantity).each do |number|
         Coupon.create!(code: "#{@promotion.code}-#{'%04d' % number}", promotion: @promotion)
       end
+    end
+
+    def can_be_approved
+      redirect_to promotion,
+      alert: 'Ação não permitida' unless @promotion.can_approve?(current_user)
     end
 end
