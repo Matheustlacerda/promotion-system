@@ -49,6 +49,6 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
     post approve_promotion_path(promotion)
     assert_redirected_to promotion_path(promotion)
     refute promotion.reload.approved?
-    assert_equal 'Ação não permitida', flash: [:alert]
+    assert_equal 'Ação não permitida', flash[:alert]
   end
 end

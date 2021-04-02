@@ -5,4 +5,4 @@ require_relative "config/application"
 
 Rails.application.load_tasks
 
-task default: ['test', 'test:system']
+task default: ['test', 'test:system', 'test:integration', 'test:models' ]

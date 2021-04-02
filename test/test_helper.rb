@@ -12,9 +12,7 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   
-  def login_user
-    user = User.create!(email: 'matheus.tl@iugu.com.br', password: 'password' )
-    
+  def login_user(user = User.create!(email: 'matheus.tl@iugu.com.br', password: 'password' ))
     login_as user, scope: :user
     user
   end
