@@ -1,8 +1,13 @@
 ENV['RAILS_ENV'] ||= 'test'
+
+require 'simplecov'
+SimpleCov.start 'rails'
+
 require_relative "../config/environment"
 require "rails/test_help"
 
 class ActiveSupport::TestCase
+  include ActionMailer::TestHelper
   include Warden::Test::Helpers
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)

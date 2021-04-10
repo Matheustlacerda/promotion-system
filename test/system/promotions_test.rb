@@ -227,14 +227,17 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'user approve a promotion' do
-    user = User.create!(email: 'eduardo.tl@iugu.com.br', password: 'password')
+    user = User.create!(email: 'eduardo@iugu.com.br', password: 'password')
     christmas = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: user)
 
     approver = login_user
     visit promotion_path(christmas)
-    accept_confirm { click_on 'Aprovar' }
+    assert_emails 1 do
+      accept_confirm { click_on 'Aprovar' }
+      assert_text 'Promoção aprovada com sucesso'
+    end
 
     assert_text 'Promoção aprovada com sucesso'
     assert_text "Aprovada por: #{approver.email}"
