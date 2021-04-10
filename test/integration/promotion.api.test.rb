@@ -12,13 +12,13 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'cupon not found' do
-    get "/api/v1/coupons/0", as: :json
+    get '/api/v1/coupons/0', as: :json
 
     assert_response 404
   end
 
-  test 'route invalid without json header' do 
-    get "/api/v1/coupons/0", as: :json
+  test 'route invalid without json header' do
+    get '/api/v1/coupons/0', as: :json
 
     assert_response 404
   end

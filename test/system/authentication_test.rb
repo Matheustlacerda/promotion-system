@@ -5,9 +5,9 @@ class AuthenticationTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Cadastrar'
     fill_in 'Email', with: 'matheus.tl@iugu.com.br'
-    fill_in  'Senha', with: 'password'
+    fill_in 'Senha', with: 'password'
     fill_in 'Confirmação de senha', with: 'password'
-    within 'form' do 
+    within 'form' do
       click_on 'Cadastrar'
     end
 
@@ -19,7 +19,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'user sign in' do
-    user = User.create!(email: 'matheus.tl@iugu.com.br', password: 'password' )
+    user = User.create!(email: 'matheus.tl@iugu.com.br', password: 'password')
 
     visit root_path
     click_on 'Entrar'
